@@ -1,0 +1,14 @@
+{
+  "name": "js-utils-mini",
+  "version": "1.0.0",
+  "description": "A small JavaScript utility library for practicing closures, async, and functional programming concepts.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["JavaScript", "utilities", "frontend"],
+  "author": "",
+  "license": "MIT",
+  "type": "module"
+}
