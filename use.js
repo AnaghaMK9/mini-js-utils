@@ -5,9 +5,11 @@ function fakeSimulator() {
     const add = (x) => x + x;
     const minus = (x, y) => x - y;
 
-    const call =  JSUtils.curry(multiply);
+    const original = { name: "Ana", address: { city: "Mumbai" } };
+const clone = JSUtils.deepClone(original);
 
-    console.log(call(3)(2))
+console.log(clone === original); // false ✅
+console.log(clone.address === original.address); // false ✅
 }
 
 fakeSimulator()

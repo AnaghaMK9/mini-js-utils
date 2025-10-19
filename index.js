@@ -62,19 +62,42 @@ export const curry = (fn) => {
         if (args.length === fn.length) {
             return fn(...args);
         } else {
-            return function(...nextArgs){
+            return function (...nextArgs) {
                 return curried(...args, ...nextArgs);
             }
         }
     }
 }
 
-export const bind = () => {
+export const bind = (context, ...args) => {
+    if (typeof this !== "function") {
+        return new Error("Bind must be called on a function.");
+    }
 
+    const fn = this;
+
+    return function (...args2) {
+        return fn.apply(context, [...args, ...args2]);
+    }
 }
 
-export const deepClone = () => {
-    
+export const deepClone = (obj) => {
+    if (obj === null || typeof obj !== "object") {
+        return obj; //primitive types returned as they are
+    }
+
+    if (Array.isArray(obj)) {
+        return obj.map((item) => deepClone(item))
+    }
+
+    const clone = {};
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            clone[key] = deepClone(obj[key]);
+        }
+    }
+
+    return clone;
 }
 
 const JSUtils = {
@@ -83,7 +106,9 @@ const JSUtils = {
     executeOnce,
     compose,
     pipe,
-    curry
+    curry,
+    bind,
+    deepClone
 }
 
 export default JSUtils;
