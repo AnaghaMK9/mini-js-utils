@@ -100,6 +100,51 @@ export const deepClone = (obj) => {
     return clone;
 }
 
+export const promiseAll = (promises) => {
+    return new Promise((resolve, reject) => {
+        let result = [];
+        let completed = 0;
+
+        if (promises.length === 0) {
+            resolve([]);
+        }
+
+        promises.forEach((p, index) => {
+            Promise.resolve(p).then((value) => {
+                result[index] = value;
+                completed++;
+
+                if (completed === promises.length) {
+                    resolve(result);
+                }
+            }).catch((err) => reject(err));
+        })
+    });
+}
+
+export function myCall(context, ...args) {
+    let obj = context || globalThis;
+    const fmSymbol = Symbol();
+    obj[fmSymbol] = this;
+    const result = obj[fmSymbol](...args);
+    delete obj[fmSymbol];
+    return result;
+}
+
+export function myApply(context, args) {
+    let obj = context || globalThis;
+    const fmSymbol = Symbol();
+    obj[fmSymbol] = this;
+    let result;
+    if (Array.isArray(args)) {
+        result = obj[fmSymbol](...args);
+    } else {
+        result = obj[fmSymbol]();
+    }
+    delete obj[fmSymbol];
+    return result;
+}
+
 const JSUtils = {
     debounce,
     throttle,
@@ -108,7 +153,9 @@ const JSUtils = {
     pipe,
     curry,
     bind,
-    deepClone
+    deepClone,
+    myApply,
+    myCall
 }
 
 export default JSUtils;
